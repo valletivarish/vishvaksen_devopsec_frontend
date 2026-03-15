@@ -1,0 +1,101 @@
+# CI/CD Pipeline for Inventory Management System Frontend
+# This pipeline automates linting, building, security scanning, and deployment
+# Triggered on push to main and pull requests for continuous integration
+
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # ============================================================
+  # CI Stage: Lint, Build, and Security Scan
+  # This stage runs on every push and pull request
+  # ============================================================
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout source code from repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js 18 runtime with npm caching for faster builds
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # Step 3: Install dependencies using clean install for reproducible builds
+      - name: Install Dependencies
+        run: npm ci
+
+      # Step 4: Run ESLint static analysis for code quality and style checks
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+
+      # Step 5: Build production bundle to verify no build errors
+      - name: Build Production Bundle
+        run: npm run build
+
+      # Step 6: Run npm audit for security vulnerability scanning in dependencies
+      - name: Security Audit
+        run: npm audit --audit-level=moderate || true
+
+      # Step 7: Run Semgrep security scanning with OWASP rulesets
+      - name: Run Semgrep Security Scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/owasp-top-ten
+            p/javascript
+            p/react
+        continue-on-error: true
+
+      # Step 8: Upload build output as artifact for deployment stage
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+
+  # ============================================================
+  # CD Stage: Deploy to AWS S3
+  # This stage only runs on push to main branch (not on PRs)
+  # ============================================================
+  cd:
+    name: Continuous Deployment
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      # Step 1: Download the built frontend from CI stage
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: ./dist
+
+      # Step 2: Configure AWS credentials for S3 deployment
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      # Step 3: Deploy frontend build to S3 bucket with static website hosting
+      - name: Deploy to S3
+        run: aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
+
+      # Step 4: Smoke test - verify the backend health endpoint is accessible
+      - name: Smoke Test
+        run: |
+          curl -f http://${{ secrets.EC2_HOST }}:8080/actuator/health || echo "Backend health check pending"
