@@ -23,6 +23,24 @@ export const formatCurrency = (value) => {
 };
 
 /**
+ * Format an ISO date-time string into a short date-only format.
+ * Returns "N/A" when the input is falsy.
+ *
+ * @param {string} dateString - ISO 8601 date-time string from the backend
+ * @returns {string} formatted date, e.g. "Jan 15, 2026"
+ */
+export const formatDate = (dateString) => {
+  if (!dateString) {
+    return "N/A";
+  }
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(dateString));
+};
+
+/**
  * Format an ISO date-time string into a human-readable local format.
  * Returns "N/A" when the input is falsy.
  *
