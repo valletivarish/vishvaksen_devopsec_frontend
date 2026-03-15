@@ -32,8 +32,9 @@ jobs:
           cache: 'npm'
 
       # Step 3: Install dependencies using clean install for reproducible builds
+      # --legacy-peer-deps resolves Vite 8 / Tailwind CSS peer dependency conflict
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       # Step 4: Run ESLint static analysis for code quality and style checks
       - name: Run ESLint
