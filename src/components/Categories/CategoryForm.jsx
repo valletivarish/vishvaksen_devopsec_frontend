@@ -130,7 +130,7 @@ const CategoryForm = () => {
               id="name"
               type="text"
               placeholder="Enter category name"
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                 errors.name ? 'border-red-500' : 'border-gray-300'
               }`}
               {...register('name')}
@@ -149,7 +149,7 @@ const CategoryForm = () => {
               id="description"
               rows="4"
               placeholder="Optional category description"
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                 errors.description ? 'border-red-500' : 'border-gray-300'
               }`}
               {...register('description')}
@@ -172,7 +172,7 @@ const CategoryForm = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FiSave />
               {submitting

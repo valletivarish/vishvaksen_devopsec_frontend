@@ -3,7 +3,7 @@
  *
  * Fixed top navigation bar displaying the application title on the
  * left and the authenticated user's name with a logout button on the
- * right.  Uses indigo-700 background for brand consistency.
+ * right.  Uses teal-700 background for brand consistency.
  */
 
 import { FiLogOut, FiUser, FiBox } from 'react-icons/fi';
@@ -13,7 +13,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 h-16 bg-indigo-700 text-white shadow-md z-50 flex items-center justify-between px-6">
+    <nav className="fixed top-0 left-0 right-0 h-16 bg-teal-700 text-white shadow-md z-50 flex items-center justify-between px-6">
       {/* Left side -- app branding */}
       <div className="flex items-center gap-2">
         <FiBox className="text-xl" />
@@ -28,7 +28,7 @@ const Navbar = () => {
         </div>
         <button
           onClick={logout}
-          className="flex items-center gap-1 bg-indigo-800 hover:bg-indigo-900 text-white text-sm px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-1 bg-teal-800 hover:bg-teal-900 text-white text-sm px-3 py-1.5 rounded-lg transition-colors"
         >
           <FiLogOut />
           Logout

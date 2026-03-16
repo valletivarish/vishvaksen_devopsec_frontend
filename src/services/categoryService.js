@@ -44,3 +44,7 @@ export const updateCategory = (id, data) => {
 export const deleteCategory = (id) => {
   return api.delete(`/categories/${id}`);
 };
+
+export const toggleCategoryStatus = (id) => {
+  return api.patch(`/categories/${id}/toggle-status`);
+};

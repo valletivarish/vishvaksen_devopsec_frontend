@@ -53,3 +53,7 @@ export const deleteSupplier = (id) => {
 export const searchSuppliers = (name) => {
   return api.get('/suppliers/search', { params: { name } });
 };
+
+export const toggleSupplierStatus = (id) => {
+  return api.patch(`/suppliers/${id}/toggle-status`);
+};

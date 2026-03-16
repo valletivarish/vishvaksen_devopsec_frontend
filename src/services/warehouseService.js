@@ -45,3 +45,7 @@ export const updateWarehouse = (id, data) => {
 export const deleteWarehouse = (id) => {
   return api.delete(`/warehouses/${id}`);
 };
+
+export const toggleWarehouseStatus = (id) => {
+  return api.patch(`/warehouses/${id}/toggle-status`);
+};

@@ -115,7 +115,7 @@ const SupplierForm = () => {
               id="name"
               type="text"
               {...register('name')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.name ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter supplier name"
@@ -134,7 +134,7 @@ const SupplierForm = () => {
               id="contactEmail"
               type="email"
               {...register('contactEmail')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.contactEmail ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="supplier@example.com"
@@ -153,7 +153,7 @@ const SupplierForm = () => {
               id="phone"
               type="text"
               {...register('phone')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.phone ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="e.g. +1-555-0101"
@@ -173,7 +173,7 @@ const SupplierForm = () => {
               id="address"
               rows={3}
               {...register('address')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-vertical ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none resize-vertical ${
                 errors.address ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter supplier address"
@@ -195,7 +195,7 @@ const SupplierForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors disabled:opacity-50"
             >
               {isSubmitting
                 ? 'Saving...'

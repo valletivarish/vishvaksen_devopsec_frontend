@@ -112,7 +112,7 @@ const WarehouseForm = () => {
               id="name"
               type="text"
               {...register('name')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.name ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter warehouse name"
@@ -131,7 +131,7 @@ const WarehouseForm = () => {
               id="location"
               type="text"
               {...register('location')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.location ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter warehouse location"
@@ -152,7 +152,7 @@ const WarehouseForm = () => {
               min={1}
               max={1000000}
               {...register('capacity')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.capacity ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter storage capacity"
@@ -174,7 +174,7 @@ const WarehouseForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors disabled:opacity-50"
             >
               {isSubmitting
                 ? 'Saving...'

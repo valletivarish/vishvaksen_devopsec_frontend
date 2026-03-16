@@ -110,7 +110,7 @@ const StockMovementForm = () => {
             <select
               id="productId"
               {...register('productId')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
                 errors.productId ? 'border-red-500' : 'border-gray-300'
               }`}
             >
@@ -134,7 +134,7 @@ const StockMovementForm = () => {
             <select
               id="warehouseId"
               {...register('warehouseId')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
                 errors.warehouseId ? 'border-red-500' : 'border-gray-300'
               }`}
             >
@@ -158,7 +158,7 @@ const StockMovementForm = () => {
             <select
               id="type"
               {...register('type')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none bg-white ${
                 errors.type ? 'border-red-500' : 'border-gray-300'
               }`}
             >
@@ -182,7 +182,7 @@ const StockMovementForm = () => {
               type="number"
               min={1}
               {...register('quantity')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.quantity ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter quantity"
@@ -201,7 +201,7 @@ const StockMovementForm = () => {
               id="referenceNumber"
               type="text"
               {...register('referenceNumber')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none ${
                 errors.referenceNumber ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="e.g. PO-2026-001"
@@ -220,7 +220,7 @@ const StockMovementForm = () => {
               id="notes"
               rows={3}
               {...register('notes')}
-              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-vertical ${
+              className={`w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none resize-vertical ${
                 errors.notes ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Optional notes about this movement"
@@ -242,7 +242,7 @@ const StockMovementForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors disabled:opacity-50"
             >
               {isSubmitting ? 'Recording...' : 'Record Movement'}
             </button>

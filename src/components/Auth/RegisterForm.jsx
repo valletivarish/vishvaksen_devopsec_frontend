@@ -57,7 +57,7 @@ const RegisterForm = () => {
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-indigo-700">Create Account</h1>
+          <h1 className="text-3xl font-bold text-teal-700">Create Account</h1>
           <p className="text-gray-500 mt-2">Join the Inventory Management System</p>
         </div>
 
@@ -75,7 +75,7 @@ const RegisterForm = () => {
                 id="fullName"
                 type="text"
                 placeholder="Enter your full name"
-                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                   errors.fullName ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('fullName')}
@@ -99,7 +99,7 @@ const RegisterForm = () => {
                 id="username"
                 type="text"
                 placeholder="Choose a username"
-                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                   errors.username ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('username')}
@@ -123,7 +123,7 @@ const RegisterForm = () => {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('email')}
@@ -147,7 +147,7 @@ const RegisterForm = () => {
                 id="password"
                 type="password"
                 placeholder="Create a password"
-                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                   errors.password ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('password')}
@@ -162,7 +162,7 @@ const RegisterForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FiUserPlus />
             {isSubmitting ? 'Creating account...' : 'Register'}
@@ -172,7 +172,7 @@ const RegisterForm = () => {
         {/* Link to login page */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 hover:text-indigo-800 font-medium">
+          <Link to="/login" className="text-teal-600 hover:text-teal-800 font-medium">
             Sign in here
           </Link>
         </p>

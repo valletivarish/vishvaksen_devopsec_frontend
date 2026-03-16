@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { FiEdit, FiTrash2, FiPlus, FiSearch } from 'react-icons/fi';
 
 import * as productService from '../../services/productService';
+import { toggleProductStatus } from '../../services/productService';
 import { formatCurrency } from '../../utils/formatters';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
@@ -30,6 +31,7 @@ const ProductList = () => {
   // Confirm dialog state for delete operations
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   // ----- data fetching -----
 
@@ -66,9 +68,24 @@ const ProductList = () => {
 
   // ----- event handlers -----
 
-  /** Open the confirm dialog and store the target product id. */
-  const handleDeleteClick = (id) => {
-    setDeleteTargetId(id);
+  /**
+   * Toggle the active/inactive status of a product.
+   * Refreshes the list after a successful update.
+   */
+  const handleToggle = async (item) => {
+    try {
+      await toggleProductStatus(item.id);
+      toast.success(`${item.name} ${item.active ? 'deactivated' : 'activated'} successfully.`);
+      fetchProducts();
+    } catch (err) {
+      toast.error('Failed to update status.');
+    }
+  };
+
+  /** Open the confirm dialog and store the target product id and object. */
+  const handleDeleteClick = (product) => {
+    setDeleteTargetId(product.id);
+    setDeleteTarget(product);
     setConfirmOpen(true);
   };
 
@@ -78,6 +95,7 @@ const ProductList = () => {
     try {
       await productService.deleteProduct(deleteTargetId);
       toast.success('Product deleted successfully');
+      setDeleteTarget(null);
       fetchProducts(); // refresh the list
     } catch (err) {
       const message =
@@ -90,6 +108,7 @@ const ProductList = () => {
   const handleDeleteCancel = () => {
     setConfirmOpen(false);
     setDeleteTargetId(null);
+    setDeleteTarget(null);
   };
 
   // ----- render helpers -----
@@ -140,14 +159,14 @@ const ProductList = () => {
               placeholder="Search by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm w-full sm:w-64"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm w-full sm:w-64"
             />
           </div>
 
           {/* Navigate to the create-product form */}
           <button
             onClick={() => navigate('/products/new')}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+            className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
           >
             <FiPlus />
             Add Product
@@ -169,13 +188,14 @@ const ProductList = () => {
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Reorder Level</th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="px-6 py-8 text-center text-gray-500 text-sm">
+                  <td colSpan="10" className="px-6 py-8 text-center text-gray-500 text-sm">
                     {searchTerm
                       ? 'No products match your search.'
                       : 'No products found. Add your first product.'}
@@ -214,19 +234,35 @@ const ProductList = () => {
                         product.reorderLevel
                       )}
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <button
+                        type="button"
+                        onClick={() => handleToggle(product)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          product.active ? 'bg-teal-600' : 'bg-gray-300'
+                        }`}
+                        title={product.active ? 'Deactivate' : 'Activate'}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            product.active ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       <div className="flex items-center justify-center gap-2">
                         {/* Edit navigates to /products/edit/:id */}
                         <button
                           onClick={() => navigate(`/products/edit/${product.id}`)}
-                          className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50 transition-colors"
+                          className="text-teal-600 hover:text-teal-900 p-1 rounded hover:bg-teal-50 transition-colors"
                           title="Edit product"
                         >
                           <FiEdit size={16} />
                         </button>
                         {/* Delete opens the confirm dialog */}
                         <button
-                          onClick={() => handleDeleteClick(product.id)}
+                          onClick={() => handleDeleteClick(product)}
                           className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors"
                           title="Delete product"
                         >
@@ -245,8 +281,8 @@ const ProductList = () => {
       {/* Confirm delete dialog */}
       <ConfirmDialog
         isOpen={confirmOpen}
-        title="Delete Product"
-        message="Are you sure you want to delete this product? This action cannot be undone."
+        title="Deactivate Product"
+        message={`Are you sure you want to deactivate "${deleteTarget?.name}"? You can reactivate it later.`}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

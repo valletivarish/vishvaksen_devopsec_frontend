@@ -80,3 +80,7 @@ export const getProductsByCategory = (categoryId) => {
 export const getProductsBySupplierId = (supplierId) => {
   return api.get(`/products/supplier/${supplierId}`);
 };
+
+export const toggleProductStatus = (id) => {
+  return api.patch(`/products/${id}/toggle-status`);
+};

@@ -3,7 +3,7 @@
  *
  * Fixed left sidebar that provides navigation links to every major
  * section of the application.  Uses NavLink so the active route is
- * automatically highlighted with an indigo accent.
+ * automatically highlighted with an teal accent.
  */
 
 import { NavLink } from 'react-router-dom';
@@ -42,7 +42,7 @@ const Sidebar = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-indigo-50 text-indigo-700 border-l-4 border-indigo-700'
+                      ? 'bg-teal-50 text-teal-700 border-l-4 border-teal-700'
                       : 'text-gray-600 hover:bg-gray-50 border-l-4 border-transparent'
                   }`
                 }

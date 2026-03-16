@@ -156,7 +156,7 @@ const ProductForm = () => {
                 id="name"
                 type="text"
                 placeholder="Enter product name"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                   errors.name ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('name')}
@@ -175,7 +175,7 @@ const ProductForm = () => {
                 id="sku"
                 type="text"
                 placeholder="e.g. PROD-001"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                   errors.sku ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('sku')}
@@ -196,7 +196,7 @@ const ProductForm = () => {
               id="description"
               rows="3"
               placeholder="Optional product description"
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                 errors.description ? 'border-red-500' : 'border-gray-300'
               }`}
               {...register('description')}
@@ -218,7 +218,7 @@ const ProductForm = () => {
                 type="number"
                 step="0.01"
                 placeholder="0.00"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                   errors.unitPrice ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('unitPrice')}
@@ -237,7 +237,7 @@ const ProductForm = () => {
                 id="reorderLevel"
                 type="number"
                 placeholder="e.g. 10"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm ${
                   errors.reorderLevel ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('reorderLevel')}
@@ -257,7 +257,7 @@ const ProductForm = () => {
               </label>
               <select
                 id="categoryId"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white ${
                   errors.categoryId ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('categoryId')}
@@ -281,7 +281,7 @@ const ProductForm = () => {
               </label>
               <select
                 id="supplierId"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm bg-white ${
                   errors.supplierId ? 'border-red-500' : 'border-gray-300'
                 }`}
                 {...register('supplierId')}
@@ -312,7 +312,7 @@ const ProductForm = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FiSave />
               {submitting

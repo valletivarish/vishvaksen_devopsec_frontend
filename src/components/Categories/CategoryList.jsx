@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
 
 import * as categoryService from '../../services/categoryService';
+import { toggleCategoryStatus } from '../../services/categoryService';
 import { formatDate } from '../../utils/formatters';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
@@ -53,6 +54,20 @@ const CategoryList = () => {
   }, [fetchCategories]);
 
   // ----- event handlers -----
+
+  /**
+   * Toggle the active/inactive status of a category.
+   * Refreshes the list after a successful update.
+   */
+  const handleToggle = async (item) => {
+    try {
+      await toggleCategoryStatus(item.id);
+      toast.success(`${item.name} ${item.active ? 'deactivated' : 'activated'} successfully.`);
+      fetchCategories();
+    } catch (err) {
+      toast.error('Failed to update status.');
+    }
+  };
 
   /** Open the confirm dialog for the selected category. */
   const handleDeleteClick = (id) => {
@@ -96,7 +111,7 @@ const CategoryList = () => {
 
         <button
           onClick={() => navigate('/categories/new')}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
         >
           <FiPlus />
           Add Category
@@ -113,13 +128,14 @@ const CategoryList = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Product Count</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {categories.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-8 text-center text-gray-500 text-sm">
+                  <td colSpan="6" className="px-6 py-8 text-center text-gray-500 text-sm">
                     No categories found. Add your first category.
                   </td>
                 </tr>
@@ -141,12 +157,28 @@ const CategoryList = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {formatDate(category.createdAt)}
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <button
+                        type="button"
+                        onClick={() => handleToggle(category)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          category.active ? 'bg-teal-600' : 'bg-gray-300'
+                        }`}
+                        title={category.active ? 'Deactivate' : 'Activate'}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            category.active ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       <div className="flex items-center justify-center gap-2">
                         {/* Edit navigates to /categories/edit/:id */}
                         <button
                           onClick={() => navigate(`/categories/edit/${category.id}`)}
-                          className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50 transition-colors"
+                          className="text-teal-600 hover:text-teal-900 p-1 rounded hover:bg-teal-50 transition-colors"
                           title="Edit category"
                         >
                           <FiEdit size={16} />
@@ -172,8 +204,8 @@ const CategoryList = () => {
       {/* Confirm delete dialog */}
       <ConfirmDialog
         isOpen={confirmOpen}
-        title="Delete Category"
-        message="Are you sure you want to delete this category? Products in this category may be affected."
+        title="Deactivate Category"
+        message={`Are you sure you want to deactivate "${categories.find(c => c.id === deleteTargetId)?.name}"? You can reactivate it later.`}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

@@ -97,9 +97,9 @@ const Dashboard = () => {
       title: "Total Warehouses",
       value: totalWarehouses,
       icon: FiDatabase,
-      bgColor: "bg-purple-500",
-      lightBg: "bg-purple-50",
-      textColor: "text-purple-600",
+      bgColor: "bg-teal-500",
+      lightBg: "bg-teal-50",
+      textColor: "text-teal-600",
     },
     {
       title: "Total Suppliers",
@@ -171,10 +171,10 @@ const Dashboard = () => {
       </div>
 
       {/* ---- Total Stock Value highlight card ---- */}
-      <div className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white shadow hover:shadow-lg transition-shadow">
+      <div className="rounded-xl bg-gradient-to-r from-teal-500 to-emerald-600 p-6 text-white shadow hover:shadow-lg transition-shadow">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-indigo-100">
+            <p className="text-sm font-medium text-teal-100">
               Total Stock Value
             </p>
             <p className="mt-2 text-3xl font-bold">
@@ -263,7 +263,7 @@ const Dashboard = () => {
       <div className="rounded-lg bg-white shadow">
         {/* Section header */}
         <div className="flex items-center gap-2 border-b border-gray-200 px-6 py-4">
-          <FiActivity className="h-5 w-5 text-indigo-500" />
+          <FiActivity className="h-5 w-5 text-teal-500" />
           <h2 className="text-lg font-semibold text-gray-900">
             Recent Stock Movements
           </h2>

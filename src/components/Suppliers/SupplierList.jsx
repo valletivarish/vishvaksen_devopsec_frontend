@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiEdit, FiTrash2, FiPlus, FiSearch } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import * as supplierService from '../../services/supplierService';
+import { toggleSupplierStatus } from '../../services/supplierService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import ConfirmDialog from '../common/ConfirmDialog';
@@ -47,6 +48,20 @@ const SupplierList = () => {
   useEffect(() => {
     fetchSuppliers();
   }, [fetchSuppliers]);
+
+  /**
+   * Toggle the active/inactive status of a supplier.
+   * Refreshes the list after a successful update.
+   */
+  const handleToggle = async (item) => {
+    try {
+      await toggleSupplierStatus(item.id);
+      toast.success(`${item.name} ${item.active ? 'deactivated' : 'activated'} successfully.`);
+      fetchSuppliers();
+    } catch (err) {
+      toast.error('Failed to update status.');
+    }
+  };
 
   /**
    * Handle confirmed deletion of a supplier.
@@ -93,7 +108,7 @@ const SupplierList = () => {
               placeholder="Search by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none w-full sm:w-64"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none w-full sm:w-64"
             />
           </div>
 
@@ -101,7 +116,7 @@ const SupplierList = () => {
           <button
             type="button"
             onClick={() => navigate('/suppliers/new')}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors"
           >
             <FiPlus size={16} />
             Add Supplier
@@ -120,13 +135,14 @@ const SupplierList = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Count</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredSuppliers.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-sm text-gray-500">
+                  <td colSpan="7" className="px-6 py-12 text-center text-sm text-gray-500">
                     {searchTerm ? 'No suppliers match your search.' : 'No suppliers found. Add one to get started.'}
                   </td>
                 </tr>
@@ -151,13 +167,29 @@ const SupplierList = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {supplier.productCount ?? supplier.products?.length ?? 0}
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <button
+                        type="button"
+                        onClick={() => handleToggle(supplier)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          supplier.active ? 'bg-teal-600' : 'bg-gray-300'
+                        }`}
+                        title={supplier.active ? 'Deactivate' : 'Activate'}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            supplier.active ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                       <div className="flex items-center justify-end gap-2">
                         {/* Edit button */}
                         <button
                           type="button"
                           onClick={() => navigate(`/suppliers/edit/${supplier.id}`)}
-                          className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                          className="p-2 text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
                           title="Edit supplier"
                         >
                           <FiEdit size={16} />
@@ -185,8 +217,8 @@ const SupplierList = () => {
       {/* Confirm-delete dialog */}
       <ConfirmDialog
         isOpen={!!deleteTarget}
-        title="Delete Supplier"
-        message={`Are you sure you want to delete "${deleteTarget?.name}"? This action cannot be undone.`}
+        title="Deactivate Supplier"
+        message={`Are you sure you want to deactivate "${deleteTarget?.name}"? You can reactivate it later.`}
         onConfirm={handleDelete}
         onCancel={() => setDeleteTarget(null)}
       />
