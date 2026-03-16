@@ -62,16 +62,20 @@ export const productSchema = yup.object().shape({
   description: yup.string()
     .max(1000, 'Description must not exceed 1000 characters'),
   unitPrice: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Unit price is required')
     .min(0.01, 'Unit price must be at least 0.01')
     .max(999999.99, 'Unit price must not exceed 999,999.99'),
   reorderLevel: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Reorder level is required')
     .min(0, 'Reorder level cannot be negative')
     .max(100000, 'Reorder level must not exceed 100,000'),
   categoryId: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Category is required'),
   supplierId: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Supplier is required'),
 });
 
@@ -111,6 +115,7 @@ export const warehouseSchema = yup.object().shape({
     .required('Location is required')
     .max(500, 'Location must not exceed 500 characters'),
   capacity: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Capacity is required')
     .min(1, 'Capacity must be at least 1')
     .max(1000000, 'Capacity must not exceed 1,000,000'),
@@ -119,16 +124,19 @@ export const warehouseSchema = yup.object().shape({
 /** Stock movement form validation. */
 export const stockMovementSchema = yup.object().shape({
   productId: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Product is required'),
   warehouseId: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Warehouse is required'),
   quantity: yup.number()
+    .transform((value, original) => (original === '' ? undefined : value))
     .required('Quantity is required')
     .min(1, 'Quantity must be at least 1')
     .max(100000, 'Quantity must not exceed 100,000'),
   type: yup.string()
     .required('Movement type is required')
-    .oneOf(['IN', 'OUT', 'TRANSFER'], 'Type must be IN, OUT, or TRANSFER'),
+    .oneOf(['IN', 'OUT', 'TRANSFER'], 'Movement type is required'),
   referenceNumber: yup.string()
     .max(100, 'Reference number must not exceed 100 characters'),
   notes: yup.string()
