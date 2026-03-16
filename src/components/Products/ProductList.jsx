@@ -13,7 +13,6 @@ import { toast } from 'react-toastify';
 import { FiEdit, FiTrash2, FiPlus, FiSearch } from 'react-icons/fi';
 
 import * as productService from '../../services/productService';
-import { toggleProductStatus } from '../../services/productService';
 import { formatCurrency } from '../../utils/formatters';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
@@ -67,20 +66,6 @@ const ProductList = () => {
   );
 
   // ----- event handlers -----
-
-  /**
-   * Toggle the active/inactive status of a product.
-   * Refreshes the list after a successful update.
-   */
-  const handleToggle = async (item) => {
-    try {
-      await toggleProductStatus(item.id);
-      toast.success(`${item.name} ${item.active ? 'deactivated' : 'activated'} successfully.`);
-      fetchProducts();
-    } catch (err) {
-      toast.error('Failed to update status.');
-    }
-  };
 
   /** Open the confirm dialog and store the target product id and object. */
   const handleDeleteClick = (product) => {
@@ -188,14 +173,13 @@ const ProductList = () => {
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Reorder Level</th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="10" className="px-6 py-8 text-center text-gray-500 text-sm">
+                  <td colSpan="9" className="px-6 py-8 text-center text-gray-500 text-sm">
                     {searchTerm
                       ? 'No products match your search.'
                       : 'No products found. Add your first product.'}
@@ -233,22 +217,6 @@ const ProductList = () => {
                         product.currentStock ?? 0,
                         product.reorderLevel
                       )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <button
-                        type="button"
-                        onClick={() => handleToggle(product)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          product.active ? 'bg-teal-600' : 'bg-gray-300'
-                        }`}
-                        title={product.active ? 'Deactivate' : 'Activate'}
-                      >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                            product.active ? 'translate-x-6' : 'translate-x-1'
-                          }`}
-                        />
-                      </button>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       <div className="flex items-center justify-center gap-2">

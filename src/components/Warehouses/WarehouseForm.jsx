@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { warehouseSchema } from '../../utils/validators';
 import * as warehouseService from '../../services/warehouseService';
+import { toggleWarehouseStatus } from '../../services/warehouseService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 
@@ -25,6 +26,7 @@ const WarehouseForm = () => {
 
   const [loading, setLoading] = useState(isEditMode);
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(true);
 
   /* Initialise react-hook-form with Yup validation */
   const {
@@ -59,6 +61,7 @@ const WarehouseForm = () => {
           location: warehouse.location || '',
           capacity: warehouse.capacity ?? '',
         });
+        setIsActive(warehouse.active !== false);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load warehouse details.');
       } finally {
@@ -161,6 +164,31 @@ const WarehouseForm = () => {
               <p className="mt-1 text-xs text-red-600">{errors.capacity.message}</p>
             )}
           </div>
+
+          {isEditMode && (
+            <div>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={async () => {
+                    try {
+                      await toggleWarehouseStatus(id);
+                      setIsActive((prev) => !prev);
+                      toast.success(`Warehouse ${isActive ? 'deactivated' : 'reactivated'} successfully.`);
+                    } catch {
+                      toast.error('Failed to update status.');
+                    }
+                  }}
+                  className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                />
+                <span className="text-sm font-medium text-gray-700">Active</span>
+                {!isActive && (
+                  <span className="text-xs text-red-600">(This warehouse is currently deactivated)</span>
+                )}
+              </label>
+            </div>
+          )}
 
           {/* Action buttons */}
           <div className="flex justify-end gap-3 pt-2">

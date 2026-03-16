@@ -14,6 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import { supplierSchema } from '../../utils/validators';
 import * as supplierService from '../../services/supplierService';
+import { toggleSupplierStatus } from '../../services/supplierService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 
@@ -26,6 +27,7 @@ const SupplierForm = () => {
 
   const [loading, setLoading] = useState(isEditMode); // only show spinner when fetching
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(true);
 
   /* Initialise react-hook-form with Yup resolver */
   const {
@@ -62,6 +64,7 @@ const SupplierForm = () => {
           phone: supplier.phone || '',
           address: supplier.address || '',
         });
+        setIsActive(supplier.active !== false);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load supplier details.');
       } finally {
@@ -182,6 +185,31 @@ const SupplierForm = () => {
               <p className="mt-1 text-xs text-red-600">{errors.address.message}</p>
             )}
           </div>
+
+          {isEditMode && (
+            <div>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={async () => {
+                    try {
+                      await toggleSupplierStatus(id);
+                      setIsActive((prev) => !prev);
+                      toast.success(`Supplier ${isActive ? 'deactivated' : 'reactivated'} successfully.`);
+                    } catch {
+                      toast.error('Failed to update status.');
+                    }
+                  }}
+                  className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                />
+                <span className="text-sm font-medium text-gray-700">Active</span>
+                {!isActive && (
+                  <span className="text-xs text-red-600">(This supplier is currently deactivated)</span>
+                )}
+              </label>
+            </div>
+          )}
 
           {/* Action buttons */}
           <div className="flex justify-end gap-3 pt-2">

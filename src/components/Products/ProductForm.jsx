@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { FiSave, FiX } from 'react-icons/fi';
 
 import * as productService from '../../services/productService';
+import { toggleProductStatus } from '../../services/productService';
 import * as categoryService from '../../services/categoryService';
 import * as supplierService from '../../services/supplierService';
 import { productSchema } from '../../utils/validators';
@@ -37,6 +38,7 @@ const ProductForm = () => {
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
+  const [isActive, setIsActive] = useState(true);
 
   // ----- react-hook-form setup -----
   const {
@@ -88,6 +90,7 @@ const ProductForm = () => {
             categoryId: product.categoryId ?? product.category?.id ?? '',
             supplierId: product.supplierId ?? product.supplier?.id ?? '',
           });
+          setIsActive(product.active !== false);
         }
       } catch (err) {
         const message =
@@ -298,6 +301,31 @@ const ProductForm = () => {
               )}
             </div>
           </div>
+
+          {isEditMode && (
+            <div className="mb-6">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={async () => {
+                    try {
+                      await toggleProductStatus(id);
+                      setIsActive((prev) => !prev);
+                      toast.success(`Product ${isActive ? 'deactivated' : 'reactivated'} successfully.`);
+                    } catch {
+                      toast.error('Failed to update status.');
+                    }
+                  }}
+                  className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                />
+                <span className="text-sm font-medium text-gray-700">Active</span>
+                {!isActive && (
+                  <span className="text-xs text-red-600">(This product is currently deactivated)</span>
+                )}
+              </label>
+            </div>
+          )}
 
           {/* Form action buttons */}
           <div className="flex justify-end gap-3">

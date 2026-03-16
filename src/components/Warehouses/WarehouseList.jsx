@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import * as warehouseService from '../../services/warehouseService';
-import { toggleWarehouseStatus } from '../../services/warehouseService';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import ConfirmDialog from '../common/ConfirmDialog';
@@ -54,20 +53,6 @@ const WarehouseList = () => {
   useEffect(() => {
     fetchWarehouses();
   }, [fetchWarehouses]);
-
-  /**
-   * Toggle the active/inactive status of a warehouse.
-   * Refreshes the list after a successful update.
-   */
-  const handleToggle = async (item) => {
-    try {
-      await toggleWarehouseStatus(item.id);
-      toast.success(`${item.name} ${item.active ? 'deactivated' : 'activated'} successfully.`);
-      fetchWarehouses();
-    } catch (err) {
-      toast.error('Failed to update status.');
-    }
-  };
 
   /** Confirm and execute warehouse deletion. */
   const handleDelete = async () => {
@@ -115,14 +100,13 @@ const WarehouseList = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Utilization</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilization %</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {warehouses.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-12 text-center text-sm text-gray-500">
+                  <td colSpan="6" className="px-6 py-12 text-center text-sm text-gray-500">
                     No warehouses found. Add one to get started.
                   </td>
                 </tr>
@@ -163,22 +147,6 @@ const WarehouseList = () => {
                           </div>
                           <span className="text-xs font-medium">{percentage}%</span>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          type="button"
-                          onClick={() => handleToggle(warehouse)}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                            warehouse.active ? 'bg-teal-600' : 'bg-gray-300'
-                          }`}
-                          title={warehouse.active ? 'Deactivate' : 'Activate'}
-                        >
-                          <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              warehouse.active ? 'translate-x-6' : 'translate-x-1'
-                            }`}
-                          />
-                        </button>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                         <div className="flex items-center justify-end gap-2">

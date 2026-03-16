@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { FiSave, FiX } from 'react-icons/fi';
 
 import * as categoryService from '../../services/categoryService';
+import { toggleCategoryStatus } from '../../services/categoryService';
 import { categorySchema } from '../../utils/validators';
 import LoadingSpinner from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
@@ -33,6 +34,7 @@ const CategoryForm = () => {
   const [loading, setLoading] = useState(isEditMode);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(true);
 
   // ----- react-hook-form setup -----
   const {
@@ -65,6 +67,7 @@ const CategoryForm = () => {
           name: category.name || '',
           description: category.description || '',
         });
+        setIsActive(category.active !== false);
       } catch (err) {
         const message =
           err.response?.data?.message || 'Failed to load category.';
@@ -158,6 +161,31 @@ const CategoryForm = () => {
               <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
             )}
           </div>
+
+          {isEditMode && (
+            <div className="mb-6">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={async () => {
+                    try {
+                      await toggleCategoryStatus(id);
+                      setIsActive((prev) => !prev);
+                      toast.success(`Category ${isActive ? 'deactivated' : 'reactivated'} successfully.`);
+                    } catch {
+                      toast.error('Failed to update status.');
+                    }
+                  }}
+                  className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                />
+                <span className="text-sm font-medium text-gray-700">Active</span>
+                {!isActive && (
+                  <span className="text-xs text-red-600">(This category is currently deactivated)</span>
+                )}
+              </label>
+            </div>
+          )}
 
           {/* Form action buttons */}
           <div className="flex justify-end gap-3">
