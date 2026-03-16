@@ -17,8 +17,8 @@ output "vpc_id" {
 # The public IP and instance ID are needed for SSH access and
 # for configuring the frontend API proxy or CORS settings.
 output "ec2_public_ip" {
-  description = "Public IP address of the backend EC2 instance"
-  value       = aws_instance.backend.public_ip
+  description = "Elastic IP address of the backend EC2 instance"
+  value       = aws_eip.backend.public_ip
 }
 
 output "ec2_instance_id" {
@@ -31,7 +31,7 @@ output "ec2_instance_id" {
 # application to make API requests to the Spring Boot backend.
 output "backend_api_url" {
   description = "URL for the Spring Boot backend API"
-  value       = "http://${aws_instance.backend.public_ip}:8080"
+  value       = "http://${aws_eip.backend.public_ip}:8080"
 }
 
 # -- RDS Outputs --

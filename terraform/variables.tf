@@ -64,7 +64,7 @@ variable "private_subnet_cidrs" {
 variable "instance_type" {
   description = "EC2 instance type for the backend application server"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 # -- EC2 Key Pair --

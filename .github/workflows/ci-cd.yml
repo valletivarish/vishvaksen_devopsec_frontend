@@ -42,8 +42,11 @@ jobs:
         continue-on-error: true
 
       # Step 5: Build production bundle to verify no build errors
+      # VITE_API_BASE_URL is set so the frontend knows the backend API location
       - name: Build Production Bundle
         run: npm run build
+        env:
+          VITE_API_BASE_URL: http://${{ secrets.EC2_HOST }}:8080/api
 
       # Step 6: Run npm audit for security vulnerability scanning in dependencies
       - name: Security Audit

@@ -111,3 +111,17 @@ resource "aws_instance" "backend" {
     Name = "${var.project_name}-backend-server"
   }
 }
+
+# =============================================================================
+# Elastic IP for EC2 Instance
+# Provides a static public IP that persists across instance stops/starts.
+# This ensures the backend API URL remains constant for the frontend and CI/CD.
+# =============================================================================
+resource "aws_eip" "backend" {
+  instance = aws_instance.backend.id
+  domain   = "vpc"
+
+  tags = {
+    Name = "${var.project_name}-backend-eip"
+  }
+}
